@@ -6,5 +6,5 @@ build_property.ProjectTypeGuids =
 build_property.PublishSingleFile = 
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
-build_property.RootNamespace = Lab_6th
-build_property.ProjectDir = D:\uni\git\Lab_6th\
+build_property.RootNamespace = ConsoleApp2
+build_property.ProjectDir = D:\uni\git\CWTask 1\ConsoleApp2\
