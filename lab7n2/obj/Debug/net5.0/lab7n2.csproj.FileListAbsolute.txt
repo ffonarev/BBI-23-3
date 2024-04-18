@@ -1,0 +1,16 @@
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.exe
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.deps.json
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.runtimeconfig.json
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.runtimeconfig.dev.json
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.dll
+D:\git\lab7n2\bin\Debug\net5.0\ref\lab7n2.dll
+D:\git\lab7n2\bin\Debug\net5.0\lab7n2.pdb
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.csproj.AssemblyReference.cache
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.GeneratedMSBuildEditorConfig.editorconfig
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.AssemblyInfoInputs.cache
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.AssemblyInfo.cs
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.csproj.CoreCompileInputs.cache
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.dll
+D:\git\lab7n2\obj\Debug\net5.0\ref\lab7n2.dll
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.pdb
+D:\git\lab7n2\obj\Debug\net5.0\lab7n2.genruntimeconfig.cache
