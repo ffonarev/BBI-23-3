@@ -1,25 +1,29 @@
-﻿using System;
+using System;
 
 namespace lab7n2
 {
     abstract class Discipline
     {
         protected string _disname;
-        public Discipline(string disname)
+        protected string _surname;
+        protected double _res1;
+        protected double _res2;
+        protected double _res3;
+        public double _bestres;
+        public Discipline(string disname, string surname, double res1, double res2, double res3)
         {
             _disname = disname;
+            _surname = surname;
+            _res1 = res1;
+            _res2 = res2;
+            _res3 = res3;
+            _bestres = 0;
         }
         public abstract void Print();
     }
     class JumpsHeight : Discipline
     {
-        private string _surname;
-        private double _res1;
-        private double _res2;
-        private double _res3;
-        public double _bestres;
-
-        public JumpsHeight(string disname, string surname, double res1, double res2, double res3) : base(disname)
+        public JumpsHeight(string disname, string surname, double res1, double res2, double res3) : base(disname, surname, res1, res2, res3)
         {
             _surname = surname;
             _res1 = res1;
@@ -38,13 +42,7 @@ namespace lab7n2
     }
     class JumpsLength : Discipline
     {
-        private string _surname;
-        private double _res1;
-        private double _res2;
-        private double _res3;
-        public double _bestres;
-
-        public JumpsLength(string disname, string surname, double res1, double res2, double res3) : base(disname)
+        public JumpsLength(string disname, string surname, double res1, double res2, double res3) : base(disname, surname, res1, res2, res3)
         {
             _surname = surname;
             _res1 = res1;
