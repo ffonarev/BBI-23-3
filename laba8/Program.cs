@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+
+
 
 
 namespace lab8
@@ -69,10 +71,10 @@ namespace lab8
         {
             int TextLevel = 0;
             string[] words = text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
-            
-            foreach(string word in words)
+
+            foreach (string word in words)
             {
-                foreach(char c in word)
+                foreach (char c in word)
                 {
                     if (char.IsPunctuation(c)) { TextLevel++; }
                 }
@@ -96,12 +98,12 @@ namespace lab8
             int counter = 0;
             string[] words = text.Split(' ');
             Regex regex = new Regex("[ёуеыаоэяиюyeuioa]", RegexOptions.IgnoreCase);
-            foreach(string word in words)
+            foreach (string word in words)
             {
                 counter = regex.Matches(word).Count;
-                if(counter == 1) { one++; }
-                else if(counter == 2) { two++; }
-                else if(counter == 3) { three++; }
+                if (counter == 1) { one++; }
+                else if (counter == 2) { two++; }
+                else if (counter == 3) { three++; }
                 else { more++; }
             }
             int[] count = new int[] { one, two, three, more };
@@ -121,16 +123,16 @@ namespace lab8
             StringBuilder line = new StringBuilder();
             int LineLength = 0;
 
-            foreach(string word in words)
+            foreach (string word in words)
             {
-                if(LineLength + word.Length + 1 > 50)
+                if (LineLength + word.Length + 1 > 50)
                 {
                     Adjustline(line, 50);
                     lines.Add(line.ToString());
                     line.Clear();
                     LineLength = 0;
                 }
-                if(line.Length > 0)
+                if (line.Length > 0)
                 {
                     line.Append(" ");
                     LineLength++;
@@ -138,7 +140,7 @@ namespace lab8
                 line.Append(word);
                 LineLength += word.Length;
             }
-            if(line.Length > 0)
+            if (line.Length > 0)
             {
                 Adjustline(line, 50);
                 lines.Add(line.ToString());
@@ -149,13 +151,49 @@ namespace lab8
 
         private void Adjustline(StringBuilder line, int neededLength)
         {
-            while(line.Length < neededLength)
+            while (line.Length < neededLength)
             {
-                for(int i = 0; i < line.Length && line.Length < neededLength; i++)
+                for (int i = 0; i < line.Length && line.Length < neededLength; i++)
                 {
-                    if(line[i] == ' ' && (i == 0 || line[i-1] != ' ')) { line.Insert(i, ' '); i++; }
+                    if (line[i] == ' ' && (i == 0 || line[i - 1] != ' ')) { line.Insert(i, ' '); i++; }
                 }
             }
+        }
+    }
+
+    struct LetterPair
+    {
+        public string _pair { get; }
+        public int count { get; private set; }
+        public string _code { get; set; }
+
+
+        public LetterPair(string pair)
+        {
+            _pair = pair;
+            count = 1;
+            _code = "...";
+        }
+
+        public void Increment()
+        {
+            count++;
+        }
+
+        public static string[] CreateCode(string text)
+        {
+            string[] code = new string[10];
+            int c = 0;
+            for (int i = 33; i < 127; i++)
+            {
+                if (text.Contains((char)i) == false)
+                {
+                    code[c] = char.ToUpper((char)i).ToString();
+                    c++;
+                    if (c == 10) { break; }
+                }
+            }
+            return code;
         }
     }
 
@@ -164,7 +202,12 @@ namespace lab8
         private string text;
         private string[] Keys;
         private string[] Codes;
-        public Task_9(string text): base(text) { this.text = text; }
+        private List<LetterPair> letterPairs;
+        public Task_9(string text) : base(text) 
+        { 
+            this.text = text;
+            this.letterPairs = new List<LetterPair>();
+        }
         public string[] GetKeys()
         {
             return Keys;
@@ -177,13 +220,9 @@ namespace lab8
         {
             return ParseText(text);
         }
-        protected string[] First10KeysToArray(Dictionary<string, int> a)
+        private List<LetterPair> CreateLetterPairRu()
         {
-            return a.Take(10).Select(x => x.Key).ToArray();
-        }
-        protected Dictionary<string, int> CreateLetterDictionaryRu()
-        {
-            Dictionary<string, int> letterComb = new Dictionary<string, int>();
+            List<LetterPair> pairs = new List<LetterPair>();
             for (int i = 1072; i < 1105; i++)
             {
                 for (int j = 1072; j < 1105; j++)
@@ -195,14 +234,14 @@ namespace lab8
                     char first = (char)n1;
                     char second = (char)n2;
                     string k = first.ToString() + second.ToString();
-                    letterComb.Add(k, 0);
+                    pairs.Add(new LetterPair(k));
                 }
             }
-            return letterComb;
+            return pairs;
         }
-        protected Dictionary<string, int> CreateLetterDictionaryEng()
+        private List<LetterPair> CreateLetterPairEng()
         {
-            Dictionary<string, int> letterComb = new Dictionary<string, int>();
+            List<LetterPair> pairs = new List<LetterPair>();
             for (int i = 97; i < 123; i++)
             {
                 for (int j = 97; j < 123; j++)
@@ -212,61 +251,44 @@ namespace lab8
                     char first = (char)n1;
                     char second = (char)n2;
                     string k = first.ToString() + second.ToString();
-                    letterComb.Add(k, 0);
+                    pairs.Add(new LetterPair(k));
                 }
             }
-            return letterComb;
+            return pairs;
         }
         protected bool CheckTheLanguage()
         {
             string rusLetters = "ёЁйЙцЦуУкКеЕнНгГшШщЩзЗхХъЪфФыЫвВаАпПрРоОлЛдДжЖэЭяЯчЧсСмМиИтТьЬбБюЮ";
-            for(int i = 0; i <rusLetters.Length; i++)
+            for (int i = 0; i < rusLetters.Length; i++)
             {
                 if (text.Contains(rusLetters[i])) { return true; }
             }
             return false;
         }
-        protected string[] CreateCode()
-        {
-            string[] code = new string[10];
-            int c = 0;
-            for(int i = 33; i < 127; i++)
-            {
-                if(text.Contains((char)i) == false)
-                {
-                    code[c] = char.ToUpper((char)i).ToString();
-                    c++;
-                    if(c == 10) { break; }
-                }
-            }
-            return code;
-        }
+
 
         protected override string ParseText(string text)
         {
-            Dictionary<string, int> letterComb = new Dictionary<string, int>();
-            if(CheckTheLanguage() == false) { letterComb = CreateLetterDictionaryEng(); }
-            else { letterComb = CreateLetterDictionaryRu(); }
-            
-            for(int i = 0; i < text.Length - 1; i++)
+            List<LetterPair> letterPairs;
+            if (CheckTheLanguage() == false) { letterPairs = CreateLetterPairEng(); }
+            else { letterPairs = CreateLetterPairRu(); }
+
+            for (int i = 0; i < text.Length - 1; i++)
             {
-                if(letterComb.ContainsKey(text[i].ToString() + text[i + 1].ToString()))
-                {
-                    letterComb[text[i].ToString() + text[i + 1].ToString()]++;
-                }
+                string pair = text[i].ToString() + text[i + 1].ToString();
+                var letterPair = letterPairs.FirstOrDefault(lp => lp._pair == pair);
+                if(letterPair._pair != null) { letterPair.Increment(); }
             }
 
-            var sortedLetterComb = letterComb.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            var sortedLetterPairs = letterPairs.OrderByDescending(lp => lp.count).Take(10).ToArray();
 
-            string[] keys = First10KeysToArray(sortedLetterComb);
-            string[] codes = CreateCode();
 
-            for(int i = 0; i < keys.Length; i++)
-            {
-                text = text.Replace(keys[i], codes[i]);
-            }
-            Keys = keys;
-            Codes = codes;
+            //for (int i = 0; i < keys.Length; i++)
+            //{
+            //    text = text.Replace(keys[i], codes[i]);
+            //}
+            //Keys = keys;
+            //Codes = codes;
 
             return text;
         }
@@ -325,7 +347,7 @@ namespace lab8
             Console.WriteLine("\nЗадание 6:");
             for (int i = 0; i < count.Length; i++)
             {
-                Console.WriteLine(" количество слоговов: {0} \t количество слов : {1} ", i+1, count[i]);
+                Console.WriteLine(" количество слоговов: {0} \t количество слов : {1} ", i + 1, count[i]);
             }
 
             Console.WriteLine("\nЗадание 8:");
